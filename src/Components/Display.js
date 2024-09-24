@@ -6,7 +6,7 @@ const Display = () => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:5001/getdetails')
+    fetch('https://hashagile-server.onrender.com/getdetails')
       .then(response => response.json())
       .then(data => setDetails(data.details))
       .catch(error => console.error('Error fetching data:', error));
@@ -65,37 +65,46 @@ const Display = () => {
         <tbody className="bg-white">
           {details.length > 0 ? (
             details.map(detail => (
-              <tr key={detail._id}>
-                <td className="py-4 px-6 border-b border-gray-200">{detail.name}</td>
-                <td className="py-4 px-6 border-b border-gray-200 truncate">{detail.email}</td>
-                <td className="py-4 px-6 border-b border-gray-200">{detail.phone}</td>
-                <td className="py-4 px-6 border-b border-gray-200">{detail.college_name}</td>
-                <td className="py-4 px-6 border-b border-gray-200">{detail.skills.join(', ')}</td>
-                <td className="py-4 px-6 border-b border-gray-200 relative">
-                  <button
-                    className="bg-blue-500 text-white py-1 px-2 rounded-full text-xs"
-                    onClick={() => toggleDropdown(detail._id)}
-                  >
-                    Download
-                  </button>
-                  {dropdownOpen === detail._id && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-                      <button
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => downloadPDF(detail)}
-                      >
-                        Download PDF
-                      </button>
-                      <button
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onClick={() => downloadCSV(detail)}
-                      >
-                        Download CSV
-                      </button>
-                    </div>
-                  )}
-                </td>
-              </tr>
+<tr key={detail._id}>
+  <td className="py-4 px-6 border-b border-gray-200">{detail.name}</td>
+  <td className="py-4 px-6 border-b border-gray-200 truncate">{detail.email}</td>
+  <td className="py-4 px-6 border-b border-gray-200">{detail.phone}</td>
+  <td className="py-4 px-6 border-b border-gray-200">{detail.college_name}</td>
+  <td className="py-4 px-6 border-b border-gray-200">
+    {detail.skills.map((skill, index) => (
+      <span
+        key={index}
+        className="inline-block bg-gray-800 text-white text-xs font-semibold mr-2 px-2.5 py-0.5 rounded"
+      >
+        {skill}
+      </span>
+    ))}
+  </td>
+  <td className="py-4 px-6 border-b border-gray-200 relative">
+    <button
+      className="bg-blue-500 text-white py-1 px-2 rounded-full text-xs"
+      onClick={() => toggleDropdown(detail._id)}
+    >
+      Download
+    </button>
+    {dropdownOpen === detail._id && (
+      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+        <button
+          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          onClick={() => downloadPDF(detail)}
+        >
+          Download PDF
+        </button>
+        <button
+          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          onClick={() => downloadCSV(detail)}
+        >
+          Download CSV
+        </button>
+      </div>
+    )}
+  </td>
+</tr>
             ))
           ) : (
             <tr>

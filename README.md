@@ -1,70 +1,104 @@
-# Getting Started with Create React App
+# Resume Uploader & Details Viewer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is a web application that allows users to upload their resumes (in PDF format), extract details from the PDF, and view the extracted information. Additionally, it includes a feature to display all previously uploaded resumes and download them as PDF or CSV files.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Resume Upload**: Upload resumes in PDF format, extract key information like name, email, phone, college name, and skills.
+- **Details Display**: View all uploaded resumes along with their extracted details.
+- **File Download**: Download individual resume details as PDF or CSV.
+- **Tab Navigation**: Switch between "Upload Resume" and "Display Details" views using a simple tab navigation.
 
-### `npm start`
+## Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+├── public
+│   └── index.html
+├── src
+│   ├── Components
+│   │   ├── Display.js         # Displays the list of resumes
+│   │   ├── Details.js         # Shows extracted details after uploading a resume
+│   │   └── Upload.js          # Upload component to handle resume submission
+│   ├── App.css                # Basic styling for the app
+│   ├── App.js                 # Main component that manages tab switching and state
+│   └── index.js               # Entry point for the React app
+├── .gitignore
+├── package.json
+└── README.md
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Installation
 
-### `npm test`
+### Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js
+- npm or yarn
 
-### `npm run build`
+### Steps to Run
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Clone the Repository
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+git clone https://github.com/your-username/resume-uploader.git
+cd resume-uploader
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Install Dependencies
 
-### `npm run eject`
+Install all the necessary dependencies using npm:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+npm install
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Or using yarn:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+yarn install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Run the Application
 
-## Learn More
+Start the development server:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The app will be available at [http://localhost:3000](http://localhost:3000).
 
-### Code Splitting
+## Backend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+You need a backend server running to handle PDF extraction and storing of details. The app assumes you have the following endpoints:
 
-### Analyzing the Bundle Size
+- `POST /generateDetails`: To process the extracted text from a PDF and return details.
+- `POST /postdetails`: To save the extracted details to a database.
+- `GET /getdetails`: To fetch a list of previously submitted resumes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Make sure to modify the URL in the `App.js` and `Display.js` files if your backend is hosted at a different location.
 
-### Making a Progressive Web App
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Upload a Resume:
 
-### Advanced Configuration
+1. Navigate to the **Upload Resume** tab.
+2. Choose a PDF file containing the resume, and the system will extract details like name, email, phone, etc.
+3. The extracted details will be sent to the server for further processing.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### View Uploaded Resumes:
 
-### Deployment
+1. Switch to the **Display Details** tab.
+2. The system fetches all uploaded resumes and their details from the server.
+3. You can download the details as either a PDF or CSV.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Technologies Used
 
-### `npm run build` fails to minify
+### Frontend:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- React.js
+- Tailwind CSS for styling
+
+### Backend (Expected setup):
+
+- Node.js / Express (for API endpoints)
+- A service for extracting text from PDFs (e.g., `pdf-parse`)
