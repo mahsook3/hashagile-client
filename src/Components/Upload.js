@@ -32,7 +32,6 @@ function Upload({ loading, details, setDetails, setLoading, pdfToText }) {
       .then((data) => {
         console.log("Received response:", data);
         setDetails(data.details); // Update the state with the received details
-        toast.success("Details uploaded successfully!");
         postDetailsToServer(data.details); // Post details to the new endpoint
         setLoading(false); // Stop loading after receiving response
       })

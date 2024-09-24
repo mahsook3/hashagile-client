@@ -40,8 +40,8 @@ This project is a web application that allows users to upload their resumes (in 
 #### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/resume-uploader.git
-cd resume-uploader
+git clone https://github.com/mahsook3/hashagile-client.git
+cd hashagile-client
 ```
 
 #### Install Dependencies
