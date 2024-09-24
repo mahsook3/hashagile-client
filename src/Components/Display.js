@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import jsPDF from 'jspdf';
+import React, { useState, useEffect, useRef } from "react";
+import jsPDF from "jspdf";
 
 const Display = () => {
   const [details, setDetails] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(null);
 
   useEffect(() => {
-    fetch('https://hashagile-server.onrender.com/getdetails')
-      .then(response => response.json())
-      .then(data => setDetails(data.details))
-      .catch(error => console.error('Error fetching data:', error));
+    fetch("https://hashagile-server.onrender.com/getdetails")
+      .then((response) => response.json())
+      .then((data) => setDetails(data.details))
+      .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
   const downloadPDF = (detail) => {
@@ -18,16 +18,20 @@ const Display = () => {
     doc.text(`Email: ${detail.email}`, 10, 20);
     doc.text(`Phone: ${detail.phone}`, 10, 30);
     doc.text(`College: ${detail.college_name}`, 10, 40);
-    doc.text(`Skills: ${detail.skills.join(', ')}`, 10, 50);
+    doc.text(`Skills: ${detail.skills.join(", ")}`, 10, 50);
     doc.save(`${detail.name}_details.pdf`);
   };
 
   const downloadCSV = (detail) => {
-    const csvContent = `data:text/csv;charset=utf-8,Name,Email,Phone,College,Skills\n${detail.name},${detail.email},${detail.phone},${detail.college_name},${detail.skills.join(' | ')}`;
+    const csvContent = `data:text/csv;charset=utf-8,Name,Email,Phone,College,Skills\n${
+      detail.name
+    },${detail.email},${detail.phone},${
+      detail.college_name
+    },${detail.skills.join(" | ")}`;
     const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `${detail.name}_details.csv`);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `${detail.name}_details.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -64,51 +68,64 @@ const Display = () => {
         </thead>
         <tbody className="bg-white">
           {details.length > 0 ? (
-            details.map(detail => (
-<tr key={detail._id}>
-  <td className="py-4 px-6 border-b border-gray-200">{detail.name}</td>
-  <td className="py-4 px-6 border-b border-gray-200 truncate">{detail.email}</td>
-  <td className="py-4 px-6 border-b border-gray-200">{detail.phone}</td>
-  <td className="py-4 px-6 border-b border-gray-200">{detail.college_name}</td>
-  <td className="py-4 px-6 border-b border-gray-200">
-    {detail.skills.map((skill, index) => (
-      <span
-        key={index}
-        className="inline-block bg-gray-800 text-white text-xs font-semibold mr-2 px-2.5 py-0.5 rounded"
-      >
-        {skill}
-      </span>
-    ))}
-  </td>
-  <td className="py-4 px-6 border-b border-gray-200 relative">
-    <button
-      className="bg-blue-500 text-white py-1 px-2 rounded-full text-xs"
-      onClick={() => toggleDropdown(detail._id)}
-    >
-      Download
-    </button>
-    {dropdownOpen === detail._id && (
-      <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-        <button
-          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          onClick={() => downloadPDF(detail)}
-        >
-          Download PDF
-        </button>
-        <button
-          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-          onClick={() => downloadCSV(detail)}
-        >
-          Download CSV
-        </button>
-      </div>
-    )}
-  </td>
-</tr>
+            details.map((detail) => (
+              <tr key={detail._id}>
+                <td className="py-4 px-6 border-b border-gray-200">
+                  {detail.name}
+                </td>
+                <td className="py-4 px-6 border-b border-gray-200 truncate">
+                  {detail.email}
+                </td>
+                <td className="py-4 px-6 border-b border-gray-200">
+                  {detail.phone}
+                </td>
+                <td className="py-4 px-6 border-b border-gray-200">
+                  {detail.college_name}
+                </td>
+                <td className="py-4 px-6 border-b border-gray-200">
+                  {detail.skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="inline-block bg-gray-800 text-white text-xs font-semibold mr-2 px-2.5 py-0.5 rounded"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </td>
+                <td className="py-4 px-6 border-b border-gray-200 relative">
+                  <button
+                    className="bg-blue-500 text-white py-1 px-2 rounded-full text-xs"
+                    onClick={() => toggleDropdown(detail._id)}
+                  >
+                    Download
+                  </button>
+                  {dropdownOpen === detail._id && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => downloadPDF(detail)}
+                      >
+                        Download PDF
+                      </button>
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => downloadCSV(detail)}
+                      >
+                        Download CSV
+                      </button>
+                    </div>
+                  )}
+                </td>
+              </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="py-4 px-6 border-b border-gray-200 text-center">Loading...</td>
+              <td
+                colSpan="6"
+                className="py-4 px-6 border-b border-gray-200 text-center"
+              >
+                Loading...
+              </td>
             </tr>
           )}
         </tbody>

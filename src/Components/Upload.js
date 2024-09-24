@@ -1,12 +1,12 @@
-import React from 'react';
-import Details from './Details';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import Details from "./Details";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Upload({ loading, details, setDetails, setLoading, pdfToText }) {
   function extractText(event) {
     const file = event.target.files[0];
-    setLoading(true); // Show loading spinner while processing
+    setLoading(true);
 
     pdfToText(file)
       .then((text) => {
@@ -16,37 +16,37 @@ function Upload({ loading, details, setDetails, setLoading, pdfToText }) {
       .catch((error) => {
         console.error("Failed to extract text from PDF", error);
         toast.error("Failed to extract text from PDF");
-        setLoading(false); // Stop loading on error
+        setLoading(false);
       });
   }
 
   function sendTextToServer(paragraph) {
-    fetch('https://hashagile-server.onrender.com/generateDetails', {
-      method: 'POST',
+    fetch("https://hashagile-server.onrender.com/generateDetails", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ paragraph }),
     })
       .then((response) => response.json())
       .then((data) => {
         console.log("Received response:", data);
-        setDetails(data.details); // Update the state with the received details
-        postDetailsToServer(data.details); // Post details to the new endpoint
-        setLoading(false); // Stop loading after receiving response
+        setDetails(data.details);
+        postDetailsToServer(data.details);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Failed to send text to the server", error);
         toast.error("Failed to send text to the server");
-        setLoading(false); // Stop loading on error
+        setLoading(false);
       });
   }
 
   function postDetailsToServer(details) {
-    fetch('https://hashagile-server.onrender.com/postdetails', {
-      method: 'POST',
+    fetch("https://hashagile-server.onrender.com/postdetails", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ details }),
     })
